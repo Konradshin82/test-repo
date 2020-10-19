@@ -1,0 +1,21 @@
+﻿.Address {
+    width: 20%;
+    text-align: center;
+}
+
+.Balance {
+    width: 20%;
+    text-align: center;
+}
+
+.CreateTime {
+    width: 35%;
+    text-align: center;
+}
+
+.OperationTime {
+    width: 25%;
+    text-align: center;
+}
+
+

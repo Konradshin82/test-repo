@@ -1,0 +1,89 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
+    <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
+    <IsPackable>false</IsPackable>
+    <SpaRoot>ClientApp\</SpaRoot>
+    <DefaultItemExcludes>$(DefaultItemExcludes);$(SpaRoot)node_modules\**</DefaultItemExcludes>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>DEBUG</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="3.1.8" />
+    <PackageReference Include="Microsoft.TypeScript.MSBuild" Version="4.0.3">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Don't publish the SPA source files, but do show them in the project files list -->
+    <Content Remove="$(SpaRoot)**" />
+    <None Remove="$(SpaRoot)**" />
+    <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="ClientApp\src\burgerapp\AppBurger.tsx" />
+    <None Remove="ClientApp\src\burgerapp\components\burger\buildcontrols\BuildControls.tsx" />
+    <None Remove="ClientApp\src\burgerapp\components\burger\buildcontrols\buildcontrol\BuildControl.tsx" />
+    <None Remove="ClientApp\src\burgerapp\components\burger\Burger.tsx" />
+    <None Remove="ClientApp\src\burgerapp\components\burger\burgeringredient\BurgerIngredient.tsx" />
+    <None Remove="ClientApp\src\burgerapp\components\burger\ordersummary\OrderSummary.tsx" />
+    <None Remove="ClientApp\src\burgerapp\components\layout\Layout.tsx" />
+    <None Remove="ClientApp\src\burgerapp\components\logo\Logo.tsx" />
+    <None Remove="ClientApp\src\burgerapp\components\navigation\navigationitems\NavigationItems.tsx" />
+    <None Remove="ClientApp\src\burgerapp\components\navigation\navigationitems\navigationitem\navigationitem.tsx" />
+    <None Remove="ClientApp\src\burgerapp\components\navigation\sidedrawer\drawertoggle\DrawerToggle.tsx" />
+    <None Remove="ClientApp\src\burgerapp\components\navigation\sidedrawer\SideDrawer.tsx" />
+    <None Remove="ClientApp\src\burgerapp\components\navigation\toolbar\Toolbar.tsx" />
+    <None Remove="ClientApp\src\burgerapp\components\ui\backdrop\Backdrop.tsx" />
+    <None Remove="ClientApp\src\burgerapp\components\ui\button\Button.tsx" />
+    <None Remove="ClientApp\src\burgerapp\components\ui\modal\Modal.tsx" />
+    <None Remove="ClientApp\src\burgerapp\containers\burgerbuilder\BurgerBuilder.tsx" />
+    <None Remove="ClientApp\src\burgerapp\hoc\Auxu.tsx" />
+    <None Remove="ClientApp\src\cocpit\component\Copit.tsx" />
+    <None Remove="ClientApp\src\components\AuthContext.tsx" />
+    <None Remove="ClientApp\src\components\Auxulury.tsx" />
+    <None Remove="ClientApp\src\components\WithClass.tsx" />
+    <None Remove="ClientApp\src\persons\component\Persons.tsx" />
+    <None Remove="ClientApp\src\persons\component\person\component\Person.tsx" />
+    <None Remove="ClientApp\src\persons\component\person\store\Person.ts" />
+    <None Remove="ClientApp\src\testapp\AppTest.tsx" />
+    <None Remove="ClientApp\src\testapp\components\accounts\account\Account.tsx" />
+    <None Remove="ClientApp\src\testapp\components\ui\filters\Filter.tsx" />
+    <None Remove="ClientApp\src\testapp\components\ui\sorters\sorter.tsx" />
+  </ItemGroup>
+
+  <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
+    <!-- Ensure Node.js is installed -->
+    <Exec Command="node --version" ContinueOnError="true">
+      <Output TaskParameter="ExitCode" PropertyName="ErrorCode" />
+    </Exec>
+    <Error Condition="'$(ErrorCode)' != '0'" Text="Node.js is required to build and run this project. To continue, please install Node.js from https://nodejs.org/, and then restart your command prompt or IDE." />
+    <Message Importance="high" Text="Restoring dependencies using 'npm'. This may take several minutes..." />
+    <Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
+  </Target>
+
+  <Target Name="PublishRunWebpack" AfterTargets="ComputeFilesToPublish">
+    <!-- As part of publishing, ensure the JS resources are freshly built in production mode -->
+    <Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
+    <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build" />
+
+    <!-- Include the newly-built files in the publish output -->
+    <ItemGroup>
+      <DistFiles Include="$(SpaRoot)build\**; $(SpaRoot)build-ssr\**" />
+      <ResolvedFileToPublish Include="@(DistFiles->'%(FullPath)')" Exclude="@(ResolvedFileToPublish)">
+        <RelativePath>%(DistFiles.Identity)</RelativePath>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      </ResolvedFileToPublish>
+    </ItemGroup>
+  </Target>
+
+</Project>
